@@ -1,0 +1,142 @@
+#include <stdlib.h> 
+#include <string.h> 
+#include <time.h> 
+void displayHangman(int attempts) { 
+    switch (attempts) { 
+        case 6: 
+            printf("  _______\n"); 
+            printf(" |       |\n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf("_|_\n\n"); 
+            break; 
+        case 5: 
+            printf("  _______\n"); 
+            printf(" |       |\n"); 
+            printf(" |       O\n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf("_|_\n\n"); 
+            break; 
+        case 4: 
+            printf("  _______\n"); 
+            printf(" |       |\n"); 
+            printf(" |       O\n"); 
+            printf(" |       |\n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf("_|_\n\n"); 
+            break; 
+        case 3: 
+            printf("  _______\n"); 
+            printf(" |       |\n"); 
+            printf(" |       O\n"); 
+            printf(" |      /|\n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf("_|_\n\n"); 
+            break; 
+        case 2: 
+            printf("  _______\n"); 
+            printf(" |       |\n"); 
+            printf(" |       O\n"); 
+            printf(" |      /|\\\n"); 
+            printf(" |        \n"); 
+            printf(" |        \n"); 
+            printf("_|_\n\n"); 
+            break; 
+        case 1: 
+            printf("  _______\n"); 
+            printf(" |       |\n"); 
+           printf(" |      /|\\\n"); 
+            printf(" |      / \n"); 
+            printf(" |        \n"); 
+            printf("_|_\n\n"); 
+            break; 
+        case 0: 
+            printf("  _______\n"); 
+            printf(" |       |\n"); 
+            printf(" |       O\n"); 
+            printf(" |      /|\\\n"); 
+            printf(" |      / \\\n"); 
+            printf(" |        \n"); 
+            printf("_|_\n\n"); 
+            break; 
+    } 
+} 
+void displayWord(char guessed[], int length) { 
+    for (int i = 0; i < length; i++) { 
+        printf("%c ", guessed[i]); 
+    } 
+    printf("\n"); 
+} 
+int isWordGuessed(char guessed[], int length) { 
+    for (int i = 0; i < length; i++) { 
+        if (guessed[i] == '_') { 
+            return 0; 
+        } 
+    } 
+    return 1; 
+} 
+int main() { 
+    char words[50][20] = { 
+        "programming", "computer", "hangman", "language", "array", 
+        "variable", "function", "pointer", "algorithm", "binary", 
+        "compiler", "debugger", "loop", "condition", "syntax", 
+        "execution", "operator", "integer", "character", "string", 
+        "boolean", "typedef", "switch", "nested", "return", 
+        "input", "output", "process", "memory", "address", 
+        "segment", "keyword", "identifier", "constant", "header", 
+        "include", "library", "module", "parameter", "prototype", 
+        "dynamic", "static", "recursion", "structure", "union", 
+        "enumeration", "declaration", "definition", "statement", 
+"iteration" 
+    }; 
+    int numWords = 50; 
+    srand(time(0)); 
+    int randomIndex = rand() % numWords; 
+    char chosenWord[20]; 
+    strcpy(chosenWord, words[randomIndex]); 
+    int length = strlen(chosenWord); 
+    char guessed[20]; 
+    for (int i = 0; i < length; i++) { 
+        guessed[i] = '_'; 
+    } 
+    int attempts = 6; 
+    char guess; 
+    printf("Welcome to Hangman!\n"); 
+    printf("You have %d attempts to guess the word.\n", attempts); 
+    while (attempts > 0 && !isWordGuessed(guessed, length)) { 
+        printf("\n"); 
+        displayHangman(attempts); 
+        printf("Current word: "); 
+        displayWord(guessed, length); 
+        printf("Enter a letter: "); 
+        scanf(" %c", &guess); 
+ 
+        int found = 0; 
+        for (int i = 0; i < length; i++) { 
+            if (chosenWord[i] == guess && guessed[i] == '_') { 
+                guessed[i] = guess; 
+                found = 1; 
+            } 
+        } 
+        if (found) { 
+            printf("Correct guess!\n"); 
+        } else { 
+            attempts--; 
+            printf("Wrong guess. You have %d attempts left.\n", 
+attempts); 
+        } 
+    } 
+    printf("\n"); 
+    displayHangman(attempts); 
+    if (isWordGuessed(guessed, length)) { 
+        printf("Congratulations! You guessed the word: %s\n", 
+chosenWord); 
+    } else { 
+        printf("Game Over! The word was: %s\n", chosenWord); 
+    }  
